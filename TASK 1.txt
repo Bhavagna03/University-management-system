@@ -1,0 +1,621 @@
+
+
+DATE: 13-02-2026       TASK 1.
+
+DATABASE - UNIVERSITY
+TABLES   - STUDENTS,COURSES,PROFESSORS,MARKS
+
+===============
+STEP 1: CREATE DATABASE
+===============
+
+mysql> CREATE DATABASE UNIVERSITY;
+Query OK, 1 row affected (0.08 sec)
+
+mysql> USE UNIVERSITY;
+Database changed
+
+=================
+STEP 2: CREATE TABLES
+=================
+
+mysql> CREATE TABLE STUDENTS(
+    -> STUDENT_ID INT PRIMARY KEY,
+    -> STUDENT_NAME VARCHAR(90),
+    -> DEPARTMENT VARCHAR(50),
+    -> YEAR INT,
+    -> EMAIL VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> -- PROFESSORS TABLE
+mysql> CREATE TABLE PROFESSORS(
+    -> PROFESSOR_ID INT PRIMARY KEY,
+    -> PROFESSOR_NAME VARCHAR(90),
+    -> DEPARTMENT VARCHAR(50),
+    -> EMAIL VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> -- COURSE TABLE
+mysql> CREATE TABLE COURSES(
+    -> COURSE_ID INT PRIMARY KEY,
+    -> COURSE_NAME VARCHAR(90),
+    -> DEPARTMENT VARCHAR(100),
+    -> PROFESSOR_ID INT,
+    -> FOREIGN KEY (PROFESSOR_ID) REFERENCES PROFESSORS(PROFESSOR_ID)
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> -- MARKS TABLE
+mysql> CREATE TABLE MARKS(
+    -> MARK_ID INT PRIMARY KEY,
+    -> STUDENT_ID INT,
+    -> COURSE_ID INT,
+    -> MARKS INT,
+    -> EXAM_TYPE VARCHAR(50),
+    -> FOREIGN KEY (STUDENT_ID) REFERENCES STUDENTS(STUDENT_ID),
+    -> FOREIGN KEY (COURSE_ID) REFERENCES COURSES(COURSE_ID)
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+=================================
+STEP 3: INSERT VALUES INTO TABLES
+=================================
+
+mysql> INSERT INTO STUDENTS VALUES
+    -> (1,'BHAVAGNA','CSE',2,'BHAVAGNA@GMAIL.COM'),
+    -> (2,'VISHISHTA','CSE',2,'VISHISHTA@GMAIL.COM'),
+    -> (3,'POOJA','ECE',1,'POOJA@GMAIL.COM'),
+    -> (4,'MANOJ','IT',4,'MANOJ@GMAIL.COM'),
+    -> (5,'SARTHAK','AIML',3,'SARTHAK@GMAIL.COM'),
+    -> (6,'BHAVISHYA','EEE',1,'BHAVISHYA@GMAIL.COM'),
+    -> (7,'SHARANYA','CSE',1,'SHARANYA@GMAIL.COM'),
+    -> (8,'SIDDHARTH','CSE',4,'SIDDHARTH@GMAIL.COM');
+Query OK, 8 rows affected (0.04 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO PROFESSORS VALUES
+    -> (101,'MANOJ','CSE','MANOJ@GMAIL.COM'),
+    -> (102,'HARI','EEE','HARI@GMAIL.COM'),
+    -> (103,'DHARANI','IT','DHARANI@GMAIL.COM'),
+    -> (104,'JK','AIML','JK@GMAIL.COM'),
+    -> (105,'ANOOP','CSE','ANOOP@GMAIL.COM');
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO COURSES VALUES
+    -> (1001,'JAVA FULL STACK','CSE',101),
+    -> (1002,'DATA SCIENCE','AIML',104),
+    -> (1003,'SYSTEM HARDWARE','EEE',102),
+    -> (1004,'MACHIME LEARNING','CSE',105);
+Query OK, 4 rows affected (0.04 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO MARKS VALUES
+    -> (201,1,1001,98,'FINAL'),
+    -> (202,2,1001,89,'FINAL'),
+    -> (203,5,1002,99,'MID'),
+    -> (204,1,1004,46,'MID'),
+    -> (205,2,1004,44,'MID'),
+    -> (206,6,1003,90,'FINAL');
+Query OK, 6 rows affected (0.05 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> SELECT*FROM STUDENTS;
++------------+--------------+------------+------+---------------------+
+| STUDENT_ID | STUDENT_NAME | DEPARTMENT | YEAR | EMAIL               |
++------------+--------------+------------+------+---------------------+
+|          1 | BHAVAGNA     | CSE        |    2 | BHAVAGNA@GMAIL.COM  |
+|          2 | VISHISHTA    | CSE        |    2 | VISHISHTA@GMAIL.COM |
+|          3 | POOJA        | ECE        |    1 | POOJA@GMAIL.COM     |
+|          4 | MANOJ        | IT         |    4 | MANOJ@GMAIL.COM     |
+|          5 | SARTHAK      | AIML       |    3 | SARTHAK@GMAIL.COM   |
+|          6 | BHAVISHYA    | EEE        |    1 | BHAVISHYA@GMAIL.COM |
+|          7 | SHARANYA     | CSE        |    1 | SHARANYA@GMAIL.COM  |
+|          8 | SIDDHARTH    | CSE        |    4 | SIDDHARTH@GMAIL.COM |
++------------+--------------+------------+------+---------------------+
+8 rows in set (0.04 sec)
+
+mysql> SELECT*FROM PROFESSORS;
++--------------+----------------+------------+-------------------+
+| PROFESSOR_ID | PROFESSOR_NAME | DEPARTMENT | EMAIL             |
++--------------+----------------+------------+-------------------+
+|          101 | MANOJ          | CSE        | MANOJ@GMAIL.COM   |
+|          102 | HARI           | EEE        | HARI@GMAIL.COM    |
+|          103 | DHARANI        | IT         | DHARANI@GMAIL.COM |
+|          104 | JK             | AIML       | JK@GMAIL.COM      |
+|          105 | ANOOP          | CSE        | ANOOP@GMAIL.COM   |
++--------------+----------------+------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT*FROM COURSES;
++-----------+------------------+------------+--------------+
+| COURSE_ID | COURSE_NAME      | DEPARTMENT | PROFESSOR_ID |
++-----------+------------------+------------+--------------+
+|      1001 | JAVA FULL STACK  | CSE        |          101 |
+|      1002 | DATA SCIENCE     | AIML       |          104 |
+|      1003 | SYSTEM HARDWARE  | EEE        |          102 |
+|      1004 | MACHIME LEARNING | CSE        |          105 |
++-----------+------------------+------------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT*FROM MARKS;
++---------+------------+-----------+-------+-----------+
+| MARK_ID | STUDENT_ID | COURSE_ID | MARKS | EXAM_TYPE |
++---------+------------+-----------+-------+-----------+
+|     201 |          1 |      1001 |    98 | FINAL     |
+|     202 |          2 |      1001 |    89 | FINAL     |
+|     203 |          5 |      1002 |    99 | MID       |
+|     204 |          1 |      1004 |    46 | MID       |
+|     205 |          2 |      1004 |    44 | MID       |
+|     206 |          6 |      1003 |    90 | FINAL     |
++---------+------------+-----------+-------+-----------+
+6 rows in set (0.00 sec)
+
+=======================================
+STEP 4: BASIC LEVEL QUERIES
+=======================================
+mysql> -- 1. Show students along with there year from CSE department
+
+mysql> SELECT STUDENT_NAME,YEAR 
+	-> FROM STUDENTS 
+	-> WHERE DEPARTMENT = 'CSE';
++--------------+------+
+| STUDENT_NAME | YEAR |
++--------------+------+
+| BHAVAGNA     |    2 |
+| VISHISHTA    |    2 |
+| SHARANYA     |    1 |
+| SIDDHARTH    |    4 |
++--------------+------+
+4 rows in set (0.00 sec)
+
+mysql> -- 2.Show marks greater than 90
+
+mysql> SELECT STUDENT_ID,MARKS 
+	-> FROM MARKS 
+	-> WHERE MARKS>90;
++------------+-------+
+| STUDENT_ID | MARKS |
++------------+-------+
+|          1 |    98 |
+|          5 |    99 |
++------------+-------+
+2 rows in set (0.02 sec)
+
+mysql> -- 3. SHOW PROFESSORS NAMES ALPHABETICALLY
+
+mysql> SELECT PROFESSOR_NAME 
+	-> FROM PROFESSORS 
+	-> ORDER BY PROFESSOR_NAME ASC;
++----------------+
+| PROFESSOR_NAME |
++----------------+
+| ANOOP          |
+| DHARANI        |
+| HARI           |
+| JK             |
+| MANOJ          |
++----------------+
+5 rows in set (0.03 sec)
+
+mysql> -- 4. SHOW PROFESSORS NAMES WHERE DEPARTMENTS ARE ARRANGED IN ALPHABETICALLY
+
+mysql> SELECT PROFESSOR_NAME,DEPARTMENT 
+	-> FROM PROFESSORS 
+	-> ORDER BY DEPARTMENT ASC;
++----------------+------------+
+| PROFESSOR_NAME | DEPARTMENT |
++----------------+------------+
+| JK             | AIML       |
+| MANOJ          | CSE        |
+| ANOOP          | CSE        |
+| HARI           | EEE        |
+| DHARANI        | IT         |
++----------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> -- 5.COUNT HOW MANY STUDENTS ARE THERE IN EACH DEPARTMENT
+
+mysql> SELECT DEPARTMENT ,COUNT(*) 
+	-> FROM STUDENTS 
+	-> GROUP BY DEPARTMENT;
++------------+----------+
+| DEPARTMENT | COUNT(*) |
++------------+----------+
+| CSE        |        4 |
+| ECE        |        1 |
+| IT         |        1 |
+| AIML       |        1 |
+| EEE        |        1 |
++------------+----------+
+5 rows in set (0.03 sec)
+
+mysql> -- 6. SHOW OVERALL MAXIMUM MARKS
+
+mysql> SELECT MAX(MARKS) FROM MARKS;
++------------+
+| MAX(MARKS) |
++------------+
+|         99 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> -- SHOW MAXIMUM MARKS OF A INDIVIDUAL STUDENTS
+
+mysql> SELECT STUDENT_ID,MAX(MARKS) 
+	-> FROM MARKS 
+	-> GROUP BY STUDENT_ID;
++------------+------------+
+| STUDENT_ID | MAX(MARKS) |
++------------+------------+
+|          1 |         98 |
+|          2 |         89 |
+|          5 |         99 |
+|          6 |         90 |
++------------+------------+
+4 rows in set (0.02 sec)
+
+mysql>-- 7. SHOW STUDENT5S NAMES STARTING WITH ALPHABET B
+
+mysql> SELECT STUDENT_NAME
+    -> FROM STUDENTS
+    -> WHERE STUDENT_NAME LIKE 'B%';
++--------------+
+| STUDENT_NAME |
++--------------+
+| BHAVAGNA     |
+| BHAVISHYA    |
++--------------+
+2 rows in set (0.00 sec)
+
+mysql> -- 8 SELECT STUDENTS ONLY IN CSE AND IT DEPARTMENTS
+
+mysql> SELECT STUDENT_ID , DEPARTMENT FROM STUDENTS
+    -> WHERE DEPARTMENT IN ('CSE','IT');
++------------+------------+
+| STUDENT_ID | DEPARTMENT |
++------------+------------+
+|          1 | CSE        |
+|          2 | CSE        |
+|          4 | IT         |
+|          7 | CSE        |
+|          8 | CSE        |
++------------+------------+
+5 rows in set (0.03 sec)
+
+==========================================
+STEP 5: MEDIUM LEVEL QUERIES
+==========================================
+
+mysql> --1. Students with their enrolled courses
+
+mysql> SELECT S.STUDENT_NAME,C.COURSE_NAME
+    -> FROM STUDENTS S
+    -> JOIN COURSES C
+    -> ON S.DEPARTMENT=C.DEPARTMENT;
++--------------+------------------+
+| STUDENT_NAME | COURSE_NAME      |
++--------------+------------------+
+| BHAVAGNA     | MACHIME LEARNING |
+| BHAVAGNA     | JAVA FULL STACK  |
+| VISHISHTA    | MACHIME LEARNING |
+| VISHISHTA    | JAVA FULL STACK  |
+| SARTHAK      | DATA SCIENCE     |
+| BHAVISHYA    | SYSTEM HARDWARE  |
+| SHARANYA     | MACHIME LEARNING |
+| SHARANYA     | JAVA FULL STACK  |
+| SIDDHARTH    | MACHIME LEARNING |
+| SIDDHARTH    | JAVA FULL STACK  |
++--------------+------------------+
+10 rows in set (0.03 sec)
+
+mysql> -- 2.Students with marks in each course
+
+mysql> SELECT s.STUDENT_NAME, c.COURSE_NAME, m.MARKS
+    -> FROM MARKS m
+    -> JOIN STUDENTS s ON m.STUDENT_ID = s.STUDENT_ID
+    -> JOIN COURSES c ON m.COURSE_ID = c.COURSE_ID;
++--------------+------------------+-------+
+| STUDENT_NAME | COURSE_NAME      | MARKS |
++--------------+------------------+-------+
+| BHAVAGNA     | JAVA FULL STACK  |    98 |
+| VISHISHTA    | JAVA FULL STACK  |    89 |
+| SARTHAK      | DATA SCIENCE     |    99 |
+| BHAVISHYA    | SYSTEM HARDWARE  |    90 |
+| BHAVAGNA     | MACHIME LEARNING |    46 |
+| VISHISHTA    | MACHIME LEARNING |    44 |
++--------------+------------------+-------+
+6 rows in set (0.00 sec)
+
+mysql> -- 3. Students who took FINAL exam
+
+mysql> SELECT S.STUDENT_NAME,M.EXAM_TYPE
+    -> FROM MARKS M
+    -> JOIN STUDENTS S
+    -> ON M.STUDENT_ID=S.STUDENT_ID
+    -> WHERE EXAM_TYPE ='FINAL';
++--------------+-----------+
+| STUDENT_NAME | EXAM_TYPE |
++--------------+-----------+
+| BHAVAGNA     | FINAL     |
+| VISHISHTA    | FINAL     |
+| BHAVISHYA    | FINAL     |
++--------------+-----------+
+3 rows in set (0.03 sec)
+
+mysql> -- 4.Find top scorer
+
+mysql> SELECT S.STUDENT_NAME,MAX(M.MARKS)
+    -> FROM STUDENTS S
+    -> JOIN MARKS M
+    -> ON S.STUDENT_ID=M.STUDENT_ID
+    -> GROUP BY S.STUDENT_NAME;
++--------------+--------------+
+| STUDENT_NAME | MAX(M.MARKS) |
++--------------+--------------+
+| BHAVAGNA     |           98 |
+| VISHISHTA    |           89 |
+| SARTHAK      |           99 |
+| BHAVISHYA    |           90 |
++--------------+--------------+
+4 rows in set (0.01 sec)
+
+-- TO SHOW ONLY ONE TOP SCORE
+
+mysql> SELECT S.STUDENT_NAME,MAX(M.MARKS)
+    -> FROM STUDENTS S
+    -> JOIN MARKS M
+    -> ON S.STUDENT_ID=M.STUDENT_ID
+    -> GROUP BY S.STUDENT_NAME
+    -> LIMIT 1;
++--------------+--------------+
+| STUDENT_NAME | MAX(M.MARKS) |
++--------------+--------------+
+| BHAVAGNA     |           98 |
++--------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> -- 5. Students who scored above average marks
+
+mysql> SELECT S.STUDENT_NAME,M.MARKS
+    -> FROM MARKS M
+    -> JOIN STUDENTS S
+    -> ON M.STUDENT_ID=S.STUDENT_ID
+    -> WHERE M.MARKS > (SELECT AVG(MARKS) FROM MARKS);
++--------------+-------+
+| STUDENT_NAME | MARKS |
++--------------+-------+
+| BHAVAGNA     |    98 |
+| VISHISHTA    |    89 |
+| SARTHAK      |    99 |
+| BHAVISHYA    |    90 |
++--------------+-------+
+4 rows in set (0.00 sec)
+
+mysql> -- 6.Professors who teach at least one course
+
+mysql> SELECT P.PROFESSOR_NAME
+    -> FROM PROFESSORS P
+    -> JOIN COURSES C
+    -> ON P.PROFESSOR_ID = C.PROFESSOR_ID
+    -> GROUP BY P.PROFESSOR_NAME
+    -> HAVING COUNT(C.COURSE_ID) >= 1;
++----------------+
+| PROFESSOR_NAME |
++----------------+
+| MANOJ          |
+| HARI           |
+| JK             |
+| ANOOP          |
++----------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT P.PROFESSOR_NAME,C.COURSE_NAME
+    -> FROM PROFESSORS P
+    -> JOIN COURSES C
+    -> ON P.PROFESSOR_ID=C.PROFESSOR_ID
+    -> GROUP BY P.PROFESSOR_NAME ,C.COURSE_NAME;
++----------------+------------------+
+| PROFESSOR_NAME | COURSE_NAME      |
++----------------+------------------+
+| MANOJ          | JAVA FULL STACK  |
+| JK             | DATA SCIENCE     |
+| HARI           | SYSTEM HARDWARE  |
+| ANOOP          | MACHIME LEARNING |
++----------------+------------------+
+
+mysql> -- 7.Courses NOT in cse department.
+
+mysql> SELECT COURSE_NAME
+    -> FROM COURSES
+    -> WHERE COURSE_ID NOT IN (
+    -> SELECT COURSE_ID FROM COURSES WHERE DEPARTMENT='CSE'
+    -> );
++-----------------+
+| COURSE_NAME     |
++-----------------+
+| DATA SCIENCE    |
+| SYSTEM HARDWARE |
++-----------------+
+2 rows in set (0.00 sec)
+
+mysql> -- 8. Students who have not taken any exam
+
+mysql> SELECT STUDENT_NAME
+    -> FROM STUDENTS
+    -> WHERE STUDENT_ID NOT IN (
+    ->     SELECT STUDENT_ID FROM MARKS
+    -> );
++--------------+
+| STUDENT_NAME |
++--------------+
+| POOJA        |
+| MANOJ        |
+| SHARANYA     |
+| SIDDHARTH    |
++--------------+
+4 rows in set (0.03 sec)
+
+======================================
+STEP 6: ADVANCED LEVEL QUERIES
+======================================
+
+mysql> -- 1. SHOW ALL STUDENTS AND PROFESSORS
+
+mysql> SELECT S.STUDENT_NAME, C.COURSE_NAME, P.PROFESSOR_NAME
+    -> FROM MARKS M
+    -> JOIN STUDENTS S ON M.STUDENT_ID = S.STUDENT_ID
+    -> JOIN COURSES C ON M.COURSE_ID = C.COURSE_ID
+    -> JOIN PROFESSORS P ON C.PROFESSOR_ID = P.PROFESSOR_ID;
++--------------+------------------+----------------+
+| STUDENT_NAME | COURSE_NAME      | PROFESSOR_NAME |
++--------------+------------------+----------------+
+| BHAVAGNA     | JAVA FULL STACK  | MANOJ          |
+| VISHISHTA    | JAVA FULL STACK  | MANOJ          |
+| SARTHAK      | DATA SCIENCE     | JK             |
+| BHAVISHYA    | SYSTEM HARDWARE  | HARI           |
+| BHAVAGNA     | MACHIME LEARNING | ANOOP          |
+| VISHISHTA    | MACHIME LEARNING | ANOOP          |
++--------------+------------------+----------------+
+6 rows in set (0.00 sec
+
+mysql> -- 2. All Students performance summary
+
+mysql> SELECT S.STUDENT_NAME,
+    -> COUNT(C.COURSE_ID) AS TOTAL_COURSES,
+    -> SUM(M.MARKS) AS TOTAL_MARKS,
+    -> AVG(M.MARKS) AS AVG_MARKS,
+    -> MAX(M.MARKS) AS MAXIMUM_MARKS,
+    -> MIN(M.MARKS) AS MINIMUM_MARKS
+    -> FROM STUDENTS S
+    -> LEFT JOIN MARKS M
+    -> ON S.STUDENT_ID=M.STUDENT_ID
+    -> LEFT JOIN COURSES C ON C.COURSE_ID=M.COURSE_ID
+    -> GROUP BY S.STUDENT_NAME;
++--------------+---------------+-------------+-----------+---------------+---------------+
+| STUDENT_NAME | TOTAL_COURSES | TOTAL_MARKS | AVG_MARKS | MAXIMUM_MARKS | MINIMUM_MARKS |
++--------------+---------------+-------------+-----------+---------------+---------------+
+| BHAVAGNA     |             2 |         144 |   72.0000 |            98 |            46 |
+| VISHISHTA    |             2 |         133 |   66.5000 |            89 |            44 |
+| POOJA        |             0 |        NULL |      NULL |          NULL |          NULL |
+| MANOJ        |             0 |        NULL |      NULL |          NULL |          NULL |
+| SARTHAK      |             1 |          99 |   99.0000 |            99 |            99 |
+| BHAVISHYA    |             1 |          90 |   90.0000 |            90 |            90 |
+| SHARANYA     |             0 |        NULL |      NULL |          NULL |          NULL |
+| SIDDHARTH    |             0 |        NULL |      NULL |          NULL |          NULL |
++--------------+---------------+-------------+-----------+---------------+---------------+
+8 rows in set (0.00 sec)
+
+ mysql->-- 3. Students scoring above department average
+ 
+ mysql> SELECT S.STUDENT_NAME, M.MARKS
+    -> FROM STUDENTS S
+    -> JOIN MARKS M ON S.STUDENT_ID = M.STUDENT_ID
+    -> WHERE M.MARKS > (
+    ->     SELECT AVG(M2.MARKS)
+    ->     FROM MARKS M2
+    ->     JOIN STUDENTS S2 ON M2.STUDENT_ID = S2.STUDENT_ID
+    ->     WHERE S2.DEPARTMENT = S.DEPARTMENT
+    -> );
++--------------+-------+
+| STUDENT_NAME | MARKS |
++--------------+-------+
+| BHAVAGNA     |    98 |
+| VISHISHTA    |    89 |
++--------------+-------+
+2 rows in set (0.01 sec)
+ 
+ mysql> -- 4. Average marks by department
+ 
+ mysql> SELECT S.DEPARTMENT,AVG(M.MARKS)
+    -> FROM MARKS M
+    -> JOIN STUDENTS S
+    -> ON M.STUDENT_ID=S.STUDENT_ID
+    -> GROUP BY S.DEPARTMENT;
++------------+--------------+
+| DEPARTMENT | AVG(M.MARKS) |
++------------+--------------+
+| CSE        |      69.2500 |
+| AIML       |      99.0000 |
+| EEE        |      90.0000 |
++------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> -- 5.Professors without courses
+
+mysql> SELECT PROFESSOR_NAME
+    -> FROM PROFESSORS
+    -> WHERE PROFESSOR_ID NOT IN (
+    ->     SELECT PROFESSOR_ID FROM COURSES
+    -> );
++----------------+
+| PROFESSOR_NAME |
++----------------+
+| DHARANI        |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> -- 6.Grade classification
+
+mysql> SELECT STUDENT_ID, MARKS,
+    -> CASE
+    ->     WHEN MARKS >= 90 THEN 'A'
+    ->     WHEN MARKS >= 75 THEN 'B'
+    ->     WHEN MARKS >= 50 THEN 'C'
+    ->     ELSE 'FAIL'
+    -> END AS GRADE
+    -> FROM MARKS;
++------------+-------+-------+
+| STUDENT_ID | MARKS | GRADE |
++------------+-------+-------+
+|          1 |    98 | A     |
+|          2 |    89 | B     |
+|          5 |    99 | A     |
+|          1 |    46 | FAIL  |
+|          2 |    44 | FAIL  |
+|          6 |    90 | A     |
++------------+-------+-------+
+6 rows in set (0.00 sec)
+
+
+mysql> -- 7. TOP SCORE PER COURSE
+mysql> SELECT COURSE_ID, STUDENT_ID, MARKS
+    -> FROM MARKS M1
+    -> WHERE MARKS = (
+    ->     SELECT MAX(MARKS)
+    ->     FROM MARKS M2
+    ->     WHERE M1.COURSE_ID = M2.COURSE_ID
+    -> );
++-----------+------------+-------+
+| COURSE_ID | STUDENT_ID | MARKS |
++-----------+------------+-------+
+|      1001 |          1 |    98 |
+|      1002 |          5 |    99 |
+|      1004 |          1 |    46 |
+|      1003 |          6 |    90 |
++-----------+------------+-------+
+
+mysql> -- 8.Courses with marks above overall average
+
+mysql> SELECT COURSE_NAME
+    -> FROM COURSES
+    -> WHERE COURSE_ID IN (
+    ->     SELECT COURSE_ID
+    ->     FROM MARKS
+    ->     WHERE MARKS > (SELECT AVG(MARKS) FROM MARKS)
+    -> );
++-----------------+
+| COURSE_NAME     |
++-----------------+
+| JAVA FULL STACK |
+| DATA SCIENCE    |
+| SYSTEM HARDWARE |
++-----------------+
+3 rows in set (0.00 sec)
+
+
+
+
+
