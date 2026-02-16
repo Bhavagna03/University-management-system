@@ -1,7 +1,5 @@
 
 
-DATE: 13-02-2026       TASK 1.
-
 DATABASE - UNIVERSITY
 TABLES   - STUDENTS,COURSES,PROFESSORS,MARKS
 
@@ -614,6 +612,7 @@ mysql> SELECT COURSE_NAME
 | SYSTEM HARDWARE |
 +-----------------+
 3 rows in set (0.00 sec)
+
 
 
 
